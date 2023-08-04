@@ -4,8 +4,7 @@ import 'package:bmi_calculator_flutter/enums/gender.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-const activeCardColor = Color(0xFF1D1E33);
-const inActiveCardColor = Color(0xFF111328);
+import '../utils/constants.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -14,6 +13,7 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   Gender selectedGender = Gender.male;
+  int height = 180;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,7 @@ class _InputPageState extends State<InputPage> {
         title: const Text('BMI CALCULATOR'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
             child: Row(
@@ -52,7 +53,7 @@ class _InputPageState extends State<InputPage> {
                     color: selectedGender == Gender.female
                         ? activeCardColor
                         : inActiveCardColor,
-                    cardChild: IconContent(
+                    cardChild: const IconContent(
                       icon: FontAwesomeIcons.venus,
                       label: "FEMALE",
                     ),
@@ -62,23 +63,64 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Expanded(
-            child: Container(
-              margin: const EdgeInsets.all(15.0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: activeCardColor),
+            child: ReusableCard(
+              color: inActiveCardColor,
+              cardChild: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Height',
+                    style: labelTextStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        height.toString(),
+                        style: numberTextStyle,
+                      ),
+                      Text(
+                        'cm',
+                        style: labelTextStyle,
+                      )
+                    ],
+                  ),
+                  SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      thumbColor: const Color(0xFFEB1555),
+                      activeTrackColor: Colors.white,
+                      inactiveTrackColor: const Color(0xFF8D8E98),
+                      overlayColor: const Color(0x29EB1555),
+                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
+                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
+                    ),
+                    child: Slider(
+                      value: height.toDouble(),
+                      onChanged: (newValue) {
+                        setState(() {
+                          height = newValue.round();
+                        });
+                      },
+                      min: 120,
+                      max: 220,
+                    ),
+                  ),
+                ],
+              ),
+              onPress: () {},
             ),
           ),
-           Expanded(
+          Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(onPress: () {
-                  }, color: activeCardColor),
+                  child: ReusableCard(onPress: () {}, color: activeCardColor),
                 ),
                 Expanded(
                   child: ReusableCard(
-                    onPress: (){},
+                    onPress: () {},
                     color: activeCardColor,
                   ),
                 )
@@ -86,8 +128,8 @@ class _InputPageState extends State<InputPage> {
             ),
           ),
           Container(
-            color: const Color(0XFFEB1555),
-            height: 15,
+            color: bottomContainerColor,
+            height: bottomContainerHeight,
           )
         ],
       ),

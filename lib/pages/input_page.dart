@@ -1,3 +1,4 @@
+import 'package:bmi_calculator_flutter/CalculatorService.dart';
 import 'package:bmi_calculator_flutter/custom_widgets/bottom_buttom.dart';
 import 'package:bmi_calculator_flutter/custom_widgets/icon_content.dart';
 import 'package:bmi_calculator_flutter/custom_widgets/reusable_card.dart';
@@ -208,20 +209,26 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          BottomButton(onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ResultPage(),
-              ),
-            );
-          }, title: 'Calculate',)
+          BottomButton(
+            onTap: () {
+              CalculatorService calculator = CalculatorService(height, weight);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>  ResultPage(
+                    bmiResult: calculator.calculateBMI(),
+                    resultText: calculator.getResult(),
+                    interpretation: calculator.getInterpretation(),
+                  ),
+                ),
+              );
+            },
+            title: 'Calculate',
+          )
         ],
       ),
     );
   }
 }
-
-
 
 class RoundIconButton extends StatelessWidget {
   final IconData icon;

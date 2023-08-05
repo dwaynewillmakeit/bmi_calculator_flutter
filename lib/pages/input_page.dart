@@ -1,6 +1,8 @@
+import 'package:bmi_calculator_flutter/custom_widgets/bottom_buttom.dart';
 import 'package:bmi_calculator_flutter/custom_widgets/icon_content.dart';
 import 'package:bmi_calculator_flutter/custom_widgets/reusable_card.dart';
 import 'package:bmi_calculator_flutter/enums/gender.dart';
+import 'package:bmi_calculator_flutter/pages/results_page.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -187,7 +189,9 @@ class _InputPageState extends State<InputPage> {
                                     age++;
                                   });
                                 }),
-                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 10,
+                            ),
                             RoundIconButton(
                                 icon: FontAwesomeIcons.minus,
                                 onPress: () {
@@ -204,15 +208,20 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          Container(
-            color: bottomContainerColor,
-            height: bottomContainerHeight,
-          )
+          BottomButton(onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ResultPage(),
+              ),
+            );
+          }, title: 'Calculate',)
         ],
       ),
     );
   }
 }
+
+
 
 class RoundIconButton extends StatelessWidget {
   final IconData icon;

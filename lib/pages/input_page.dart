@@ -14,6 +14,8 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   Gender selectedGender = Gender.male;
   int height = 180;
+  int weight = 0;
+  int age = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +95,10 @@ class _InputPageState extends State<InputPage> {
                       activeTrackColor: Colors.white,
                       inactiveTrackColor: const Color(0xFF8D8E98),
                       overlayColor: const Color(0x29EB1555),
-                      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 15),
-                      overlayShape: const RoundSliderOverlayShape(overlayRadius: 30),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 15),
+                      overlayShape:
+                          const RoundSliderOverlayShape(overlayRadius: 30),
                     ),
                     child: Slider(
                       value: height.toDouble(),
@@ -116,12 +120,85 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: ReusableCard(onPress: () {}, color: activeCardColor),
+                  child: ReusableCard(
+                    onPress: () {},
+                    color: activeCardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'WEIGHT',
+                          style: labelTextStyle,
+                        ),
+                        Text(
+                          weight.toString(),
+                          style: numberTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.plus,
+                              onPress: () {
+                                setState(() {
+                                  weight++;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            RoundIconButton(
+                              icon: FontAwesomeIcons.minus,
+                              onPress: () {
+                                setState(() {
+                                  weight > 0 ? weight-- : weight;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: ReusableCard(
                     onPress: () {},
                     color: activeCardColor,
+                    cardChild: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Age',
+                          style: labelTextStyle,
+                        ),
+                        Text(
+                          age.toString(),
+                          style: numberTextStyle,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RoundIconButton(
+                                icon: FontAwesomeIcons.plus,
+                                onPress: () {
+                                  setState(() {
+                                    age++;
+                                  });
+                                }),
+                            SizedBox(width: 10,),
+                            RoundIconButton(
+                                icon: FontAwesomeIcons.minus,
+                                onPress: () {
+                                  setState(() {
+                                    age > 0 ? age-- : age;
+                                  });
+                                })
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -133,6 +210,28 @@ class _InputPageState extends State<InputPage> {
           )
         ],
       ),
+    );
+  }
+}
+
+class RoundIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPress;
+
+  const RoundIconButton({super.key, required this.icon, required this.onPress});
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      constraints: const BoxConstraints.tightFor(
+        width: 56,
+        height: 56,
+      ),
+      elevation: 0,
+      onPressed: onPress,
+      shape: const CircleBorder(),
+      fillColor: const Color(0XFF4C4F5E),
+      child: Icon(icon),
     );
   }
 }
